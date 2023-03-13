@@ -316,26 +316,68 @@ firstSportCar.carIsMovingWithSpeed(speed: 270)
 firstSportCar.carIsMovingWithSpeed(speed: 290)
 
 
-//final class TrunkCar : Car {
-//    init(model: String, year: UInt, wheels: UInt, volumeForGoods: UInt, speedMax: UInt, transmission: transmissionOption, color: colors) {
-//        super.init(model: model, year: year, doors: 2, wheels: wheels, trunkVolume: volumeForGoods, carSuspension: .longitudinalSprings, speedMax: speedMax, navigation: .gpsNavigator, transmission: transmission, color: color)
-//    }
-//
-//}
-//
-//var firstTrunkCar : TrunkCar = TrunkCar(model: "Ford", year: 2004, wheels: 6, volumeForGoods: 300, speedMax: 160, transmission: .automatic, color: .yellow)
-//
-//firstTrunkCar.putInTrunk(newBag: 301)
-//
-//
-//
-//final class TrunkCar : Car {
-//init(model: String, year: UInt, wheels: UInt, volumeForGoods: UInt, speedMax: UInt, transmission: transmissionOption, color: colors) {
-//    super.init(model: model, year: year, doors: 2, wheels: wheels, trunkVolume: volumeForGoods, carSuspension: .longitudinalSprings, speedMax: speedMax, navigation: .gpsNavigator, transmission: transmission, color: color)
-//}
-//
-//}
-//
-//var firstTrunkCar : TrunkCar = TrunkCar(model: "Ford", year: 2004, wheels: 6, volumeForGoods: 300, speedMax: 160, transmission: .automatic, color: .yellow)
-//
-//firstTrunkCar.putInTrunk(newBag: 301)
+class TrunkCar : Car {
+    var model : String
+    var year : UInt
+    var doors : UInt
+    var wheels : UInt
+    var trunkVolume : UInt
+    var baggage  : [UInt]
+    var carSuspension : suspension
+    var speedMax : UInt
+    var navigation : navigationSystem
+    var transmission : transmissionOption
+    internal var autoBlockDoors: UInt = 20
+    var speed : UInt{
+        willSet (newSpeed){
+            if newSpeed >= autoBlockDoors{
+                self.doorsState = .blocked
+                print("Doors \(self.doorsState) becouse speed are hight than \(autoBlockDoors)")
+            }
+            return
+        }
+    }
+    internal var doorsState : securityState
+    var lights : lightsState
+    var autoEngine : engineState {
+        didSet{
+            print("Auto engine = \(autoEngine)")
+        }
+    }
+    var color : colors
+    var isReadyToMove : Bool {
+        get{
+            return autoEngine == .started ? true : false
+        }
+    }
+    private var isReadyToStop : Bool {
+        get{
+            return speed == 0 ? true : false
+        }
+    }
+ 
+    init(model: String, year: UInt, doors: UInt, wheels: UInt, trunkVolume: UInt, carSuspension: suspension, speedMax: UInt, navigation: navigationSystem, transmission: transmissionOption, color : colors) {
+        self.doorsState = .unblocked
+        self.model = model
+        self.year = year
+        self.doors = doors
+        self.wheels = wheels
+        self.trunkVolume = trunkVolume
+        self.baggage = []
+        self.carSuspension = carSuspension
+        self.speedMax = speedMax
+        self.navigation = navigation
+        self.transmission = transmission
+        self.speed = 0
+        self.lights = .turnedOff
+        self.autoEngine = .stopped
+        self.color = color
+    }
+    convenience init(model: String, year: UInt, trunkVolume: UInt, carSuspension: suspension, speedMax: UInt, color : colors){
+        self.init(model: model, year: year, doors: 2, wheels: 6, trunkVolume: trunkVolume, carSuspension: carSuspension, speedMax: speedMax, navigation: .gpsNavigator, transmission: .automatic, color: color)
+    }
+}
+var firstTrunkCar : TrunkCar = TrunkCar(model: "UAZ", year: 2020, trunkVolume: 200, carSuspension: .longitudinalSprings, speedMax: 180, color: .yellow)
+
+firstTrunkCar.putInTrunk(newBag: 301)
+firstTrunkCar.putInTrunk(newBag: 199)
