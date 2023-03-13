@@ -299,15 +299,21 @@ class SportCar : Car {
     }
 }
 
-extension SportCar{
+extension SportCar: CustomStringConvertible{
+    var description: String {
+        return "This is Sport car"
+    }
+    
     convenience init(model: String, year: UInt, trunkVolume: UInt, speedMax: UInt,  color: colors){
         self.init(model: model, year: year, doors: 4, wheels: 4, trunkVolume: trunkVolume, carSuspension: .helicalCoilSprings, speedMax: speedMax, navigation: .secondDriver, transmission: .automatic,  color: color, myTurbo: true)
     }
+    
 }
 var firstSportCar : SportCar = SportCar(model: "Ford", year: 2004, doors: 4, wheels: 4, trunkVolume: 100, carSuspension: .helicalCoilSprings, speedMax: 300, navigation: .secondDriver, transmission: .automatic, color: .blue, myTurbo: true)
 
 var secondSportCar: SportCar = SportCar(model: "Mazda", year: 2010, trunkVolume: 100, speedMax: 200, color: .white)
 
+print(secondSportCar.description)
 firstSportCar.startAutoEngine(.turnedOn)
 firstSportCar.carIsMovingWithSpeed(speed: 200)
 firstSportCar.carIsMovingWithSpeed(speed: 270)
@@ -316,7 +322,10 @@ firstSportCar.carIsMovingWithSpeed(speed: 270)
 firstSportCar.carIsMovingWithSpeed(speed: 290)
 
 
-class TrunkCar : Car {
+class TrunkCar : Car, CustomStringConvertible {
+    var description: String{
+        return "This is Trunk car"
+    }
     var model : String
     var year : UInt
     var doors : UInt
@@ -381,3 +390,4 @@ var firstTrunkCar : TrunkCar = TrunkCar(model: "UAZ", year: 2020, trunkVolume: 2
 
 firstTrunkCar.putInTrunk(newBag: 301)
 firstTrunkCar.putInTrunk(newBag: 199)
+print(firstTrunkCar.description)
